@@ -2,23 +2,20 @@
 
 import React from "react";
 import NewsCard from "./NewsCard";
+import { Article } from "../lib/articleTypes";
 
-type Article = {
-  id: string;
-  title: string;
-  description: string;
-  image_url: string;
-  credibility_score: number;
-  created_at: Date | string;
-};
+const NewsCardList = ({ cards }: { cards: Article[] }) => {
+  // Safety check for undefined/null cards
+  if (!cards || !Array.isArray(cards)) {
+    return <p className="text-gray-600">No articles available</p>;
+  }
 
-const NewsCardList = ({ articles }: { articles: Article[] }) => {
   return (
-    <main style={{ padding: "16px", display: "grid", gap: "16px" }}>
-      {articles.map((article) => (
-        <NewsCard key={article.id} article={article} />
+    <div className="grid gap-4">
+      {cards.map((card) => (
+        <NewsCard key={card.id} article={card} />
       ))}
-    </main>
+    </div>
   );
 };
 

@@ -1,23 +1,14 @@
 // src/app/layout.tsx
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import './globals.css';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import Image from 'next/image';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Moja Aplikacja",
-  description: "Opis Twojej aplikacji…",
-  themeColor: "#3367D6",
-  manifest: "/manifest.json",      // <link rel="manifest" href="/manifest.json">
+  title: 'Pulse – News App',
+  description: 'Real‑time news with credibility scoring',
 };
 
 export default function RootLayout({
@@ -27,11 +18,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pl">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={inter.className}>
+        <header className="bg-black flex items-center h-16 px-4">
+          <div className="flex items-center space-x-3">
+            <Image
+              src="/Untitled design (12).png"
+              width={40}
+              height={40}
+              alt="Pulse logo"
+              className="rounded-lg"
+            />
+            <span className="text-white text-lg font-semibold">Pulse</span>
+          </div>
+        </header>
+        <main className="pt-4">{children}</main>
       </body>
     </html>
   );
 }
+
