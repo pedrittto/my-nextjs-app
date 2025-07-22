@@ -1,12 +1,32 @@
 'use client';
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NewsCard from "./NewsCard";
 import { Article } from "../lib/articleTypes";
+import { db } from "../lib/firebase";
+import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 
-const NewsCardList = ({ cards }: { cards: Article[] }) => {
-  // Safety check for undefined/null cards
-  if (!cards || !Array.isArray(cards)) {
+const NewsCardList: React.FC = () => {
+  const [cards, setCards] = useState<Article[]>([]);
+
+  useEffect(() => {
+    // Query do kolekcji articles, posortowane po created_at DESC (najnowsze na górze)
+    const q = query(collection(db, "articles"), orderBy("created_at", "desc"));
+
+    // Subskrypcja realtime
+    const unsub = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Article[];
+      setCards(data);
+    });
+
+    // Cleanup subskrypcji przy odmontowaniu komponentu
+    return () => unsub();
+  }, []);
+
+  if (!cards.length) {
     return <p className="text-gray-600">No articles available</p>;
   }
 
@@ -19,4 +39,4 @@ const NewsCardList = ({ cards }: { cards: Article[] }) => {
   );
 };
 
-export default NewsCardList; 
+export default NewsCardList;
