@@ -4,6 +4,14 @@ module.exports = {
     "./src/app/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
-  theme: { extend: {} },
+  theme: {
+    extend: {
+      colors: {
+        darkBlack: '#000000',
+        darkSection: '#121212',
+        darkCard: '#1a1a1a',
+      },
+    },
+  },
   plugins: [require("@tailwindcss/line-clamp")],
 }; 

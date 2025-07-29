@@ -97,7 +97,7 @@ export default function NewsPage() {
   }
 
   return (
-    <main className="px-4 py-8 bg-slate-50 min-h-screen">
+    <div className="min-h-screen bg-white">
       {loading ? (
         <p className="text-gray-600">Loading...</p>
       ) : cards.length === 0 ? (
@@ -105,6 +105,6 @@ export default function NewsPage() {
       ) : (
         <NewsCardList cards={cards} />
       )}
-    </main>
+    </div>
   );
 }

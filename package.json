@@ -12,9 +12,12 @@
     "@tailwindcss/line-clamp": "^0.4.4",
     "date-fns": "^4.1.0",
     "firebase": "^11.10.0",
+    "framer-motion": "^12.23.11",
     "next": "^15.3.5",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-intersection-observer": "^9.16.0",
+    "resend": "^4.7.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -29,4 +32,3 @@
     "typescript": "^5"
   }
 }
-

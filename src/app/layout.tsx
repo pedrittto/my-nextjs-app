@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pl">
-      <body className={inter.className}>
+      <body className={inter.className + ' bg-white'}>
         <header className="bg-black flex items-center h-16 px-4">
           <div className="flex items-center space-x-3">
             <Image
@@ -31,7 +31,7 @@ export default function RootLayout({
             <span className="text-white text-lg font-semibold">Pulse</span>
           </div>
         </header>
-        <main className="pt-4">{children}</main>
+        <main>{children}</main>
       </body>
     </html>
   );
