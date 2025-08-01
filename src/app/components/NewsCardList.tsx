@@ -1,6 +1,7 @@
 import React from "react";
 import NewsCard from "./NewsCard";
 import { Article } from "../lib/articleTypes";
+import { useLanguage } from "../contexts/LanguageContext";
 
 // DODAJ TEN INTERFEJS!
 interface NewsCardListProps {
@@ -8,10 +9,16 @@ interface NewsCardListProps {
 }
 
 const NewsCardList: React.FC<NewsCardListProps> = ({ cards }) => {
-  // Safety check for undefined/null cards
+  const { t, language } = useLanguage();
+  
+  console.log('📋 NewsCardList: Received', cards.length, 'cards, current language:', language);
+  
   if (!cards || !Array.isArray(cards)) {
-    return <p className="text-gray-600">No articles available</p>;
+    console.log('⚠️ NewsCardList: Invalid cards data received:', cards);
+    return <p className="text-gray-600">{t('noArticlesAvailable')}</p>;
   }
+
+  console.log('🎴 NewsCardList: Rendering', cards.length, 'NewsCard components');
 
   return (
     <div className="grid gap-4">

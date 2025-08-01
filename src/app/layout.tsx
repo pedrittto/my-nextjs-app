@@ -3,6 +3,9 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Image from 'next/image';
+import { LanguageProvider } from './contexts/LanguageContext';
+import LanguageSwitcher from './components/LanguageSwitcher';
+import Header from './components/Header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,19 +22,10 @@ export default function RootLayout({
   return (
     <html lang="pl">
       <body className={inter.className + ' bg-white'}>
-        <header className="bg-black flex items-center h-16 px-4">
-          <div className="flex items-center space-x-3">
-            <Image
-              src="/Untitled design (12).png"
-              width={40}
-              height={40}
-              alt="Pulse logo"
-              className="rounded-lg"
-            />
-            <span className="text-white text-lg font-semibold">Pulse</span>
-          </div>
-        </header>
-        <main>{children}</main>
+        <LanguageProvider>
+          <Header />
+          <main>{children}</main>
+        </LanguageProvider>
       </body>
     </html>
   );

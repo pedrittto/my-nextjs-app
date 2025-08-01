@@ -2,9 +2,11 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
-import { pl } from "date-fns/locale";
+import { pl, enUS } from "date-fns/locale";
 import PulseLogo from "/public/icons/icon-512.png";
 import { Article } from "../lib/articleTypes";
+import { useLanguage } from "../contexts/LanguageContext";
+import { Translations } from "../lib/translations";
 
 const FADE_WIDTH = 48; // px, for the fade effect on last 2-3 words
 
@@ -13,24 +15,66 @@ interface NewsCardProps {
 }
 
 // Funkcja pomocnicza do formatowania daty
-const formatDate = (dateInput: string | undefined) => {
+const formatDate = (dateInput: string | undefined, language: string, t: (key: keyof Translations) => string) => {
   try {
     if (!dateInput || dateInput === "brak danych" || dateInput === "") {
-      return "Brak daty";
+      return t('noDate');
     }
     const date = new Date(String(dateInput));
     if (isNaN(date.getTime())) {
-      return "Brak daty";
+      return t('noDate');
     }
-    return formatDistanceToNow(date, { addSuffix: true, locale: pl });
+    return formatDistanceToNow(date, { 
+      addSuffix: true, 
+      locale: language === 'pl' ? pl : enUS 
+    });
   } catch {
-    return "Brak daty";
+    return t('noDate');
   }
 };
 
 const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
   const [expanded, setExpanded] = useState(false);
   const descRef = useRef<HTMLDivElement | null>(null);
+  const { t, language } = useLanguage();
+
+  // Get language-specific content
+  const getTitle = () => {
+    if (language === 'en' && 'title_en' in article) {
+      return (article as any).title_en;
+    }
+    if (language === 'pl' && 'title_pl' in article) {
+      return (article as any).title_pl;
+    }
+    return article.title; // fallback to default title
+  };
+
+  const getDescription = () => {
+    if (language === 'en' && 'description_en' in article) {
+      return (article as any).description_en;
+    }
+    if (language === 'pl' && 'description_pl' in article) {
+      return (article as any).description_pl;
+    }
+    return article.description; // fallback to default description
+  };
+
+  const title = getTitle();
+  const description = getDescription();
+
+  console.log('🎴 NewsCard: Rendering article ID:', article.id, {
+    currentLanguage: language,
+    titleUsed: title?.substring(0, 30) + '...',
+    descriptionUsed: description?.substring(0, 30) + '...',
+    hasTitleEn: 'title_en' in article,
+    hasTitlePl: 'title_pl' in article,
+    hasDescEn: 'description_en' in article,
+    hasDescPl: 'description_pl' in article,
+    titleSource: language === 'en' && 'title_en' in article ? 'title_en' : 
+                language === 'pl' && 'title_pl' in article ? 'title_pl' : 'title (fallback)',
+    descSource: language === 'en' && 'description_en' in article ? 'description_en' : 
+               language === 'pl' && 'description_pl' in article ? 'description_pl' : 'description (fallback)'
+  });
 
   return (
     <article
@@ -42,7 +86,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
       <div className="w-full h-56 bg-gray-100 relative rounded-t-3xl overflow-hidden shadow-[0_8px_24px_-8px_rgba(0,0,0,0.18)]">
         <Image
           src={article.image_url || "/news-placeholder.png"}
-          alt="Article image"
+          alt={t('articleImage')}
           className="object-cover w-full h-full"
           fill
           unoptimized
@@ -50,15 +94,15 @@ const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
         />
         <div className="absolute top-3 right-3 z-10">
           <time className="bg-white/90 backdrop-blur-sm px-3 py-1 text-xs text-gray-600 rounded-full shadow">
-            {formatDate(article.created_at)}
+            {formatDate(article.created_at, language, t)}
           </time>
         </div>
       </div>
       {/* Treść */}
       <div className="px-4 pt-4 pb-8">
-        <h2 className="text-xl font-bold text-gray-900 leading-tight mb-2">{article.title}</h2>
+        <h2 className="text-xl font-bold text-gray-900 leading-tight mb-2">{title}</h2>
         {/* Wiarygodność */}
-        <span className="text-sm font-medium text-gray-700 mb-1 block">Wiarygodność</span>
+        <span className="text-sm font-medium text-gray-700 mb-1 block">{t('credibility')}</span>
         <div className="w-full h-5 rounded-full overflow-hidden bg-gray-200 mb-2">
           <div
             className="h-5 flex items-center justify-end pr-3 text-sm font-semibold text-white"
@@ -104,12 +148,12 @@ const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
                   whiteSpace: "pre-line",
                 }}
               >
-                {article.description}
+                {description}
               </span>
             ) : (
               // Pełny stan
               <span className="block text-sm text-gray-700 leading-snug w-full select-none">
-                {article.description}
+                {description}
               </span>
             )}
             {/* Przycisk */}
@@ -126,7 +170,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
               tabIndex={-1}
               type="button"
             >
-              {expanded ? "Czytaj mniej" : "Czytaj więcej"}
+              {expanded ? t('readLess') : t('readMore')}
             </button>
           </div>
         </div>

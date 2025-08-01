@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 // Native IntersectionObserver-based fade/slide-in
 function useReveal(ref: React.RefObject<HTMLElement>) {
@@ -50,6 +51,7 @@ export default function LandingPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   // Close modal on outside click
   useEffect(() => {
@@ -118,8 +120,8 @@ export default function LandingPage() {
           }
         >
           <div className="text-green-500 text-6xl mb-4">✓</div>
-          <h3 className="text-2xl font-bold text-black mb-2">Dziękujemy za zgłoszenie!</h3>
-          <p className="text-gray-700">Skontaktujemy się z Tobą wkrótce.</p>
+          <h3 className="text-2xl font-bold text-black mb-2">{t('thankYou')}</h3>
+          <p className="text-gray-700">{t('thankYouMessage')}</p>
         </div>
       </div>
 
@@ -139,11 +141,11 @@ export default function LandingPage() {
           }
         >
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-2xl font-bold text-black">Zgłoś się jako tester</h3>
+            <h3 className="text-2xl font-bold text-black">{t('applyAsTester')}</h3>
             <button
               onClick={() => setShowForm(false)}
               className="text-gray-400 hover:text-gray-600 text-2xl font-light"
-              aria-label="Zamknij"
+              aria-label={t('close')}
             >
               ×
             </button>
@@ -151,7 +153,7 @@ export default function LandingPage() {
           <form onSubmit={handleFormSubmit} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email *
+                {t('email')}
               </label>
               <input
                 type="email"
@@ -160,12 +162,12 @@ export default function LandingPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-200 focus:border-gray-400 transition-colors text-black placeholder-gray-400"
-                placeholder="twoj@email.com"
+                placeholder={t('emailPlaceholder')}
               />
             </div>
             <div>
               <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                Wiadomość *
+                {t('message')}
               </label>
               <textarea
                 id="message"
@@ -174,7 +176,7 @@ export default function LandingPage() {
                 required
                 rows={4}
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-200 focus:border-gray-400 transition-colors resize-none text-black placeholder-gray-400"
-                placeholder="Cześć, chciałbym zostać testerem"
+                placeholder={t('messagePlaceholder')}
               />
             </div>
             <button
@@ -183,7 +185,7 @@ export default function LandingPage() {
               className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-4 px-8 rounded-xl text-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
               style={{ willChange: 'transform' }}
             >
-              {isSubmitting ? 'Wysyłanie...' : 'Wyślij'}
+              {isSubmitting ? t('sending') : t('send')}
             </button>
           </form>
         </div>
@@ -192,16 +194,16 @@ export default function LandingPage() {
       {/* Header Section */}
       <Section className="pt-20 pb-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-6xl font-bold mb-6 tracking-tight text-black">Pulse</h1>
+          <h1 className="text-6xl font-bold mb-6 tracking-tight text-black">{t('landingTitle')}</h1>
           <p className="text-xl mb-8 max-w-2xl mx-auto leading-relaxed text-black">
-            Dołącz do testerów Pulse – zwięzłych, codziennych newsów z paskiem wiarygodności
+            {t('landingSubtitle')}
           </p>
           <button
             onClick={() => setShowForm(true)}
             className="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-4 px-8 rounded-xl text-lg transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95"
             style={{ willChange: 'transform' }}
           >
-            Wyślij zgłoszenie
+            {t('applyButton')}
           </button>
         </div>
       </Section>
@@ -221,9 +223,9 @@ export default function LandingPage() {
                 />
               </div>
               <div className="order-1 md:order-2">
-                <h2 className="text-3xl font-bold mb-6 tracking-tight text-black">Czym jest Pulse?</h2>
+                <h2 className="text-3xl font-bold mb-6 tracking-tight text-black">{t('whatIsPulse')}</h2>
                 <p className="text-lg leading-relaxed text-black">
-                  Pulse to eksperymentalna aplikacja, która codziennie generuje zwięzłe i aktualne wiadomości z oceną wiarygodności. Testujemy wersję MVP – chcemy sprawdzić, czy działa, czy jest przydatna i jak ją ulepszyć. Twoja opinia naprawdę pomoże.
+                  {t('whatIsPulseDescription')}
                 </p>
               </div>
             </div>
@@ -237,23 +239,23 @@ export default function LandingPage() {
           <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
-                <h2 className="text-3xl font-bold mb-6 tracking-tight text-black">Co robi tester?</h2>
+                <h2 className="text-3xl font-bold mb-6 tracking-tight text-black">{t('whatDoesTesterDo')}</h2>
                 <ul className="space-y-4">
                   <li className="flex items-start">
                     <span className="bg-gray-100 text-gray-700 rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold mr-3 mt-0.5">1</span>
-                    <span className="text-lg text-black">Przez 5 dni codziennie sprawdza newsy.</span>
+                    <span className="text-lg text-black">{t('testerStep1')}</span>
                   </li>
                   <li className="flex items-start">
                     <span className="bg-gray-100 text-gray-700 rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold mr-3 mt-0.5">2</span>
-                    <span className="text-lg text-black">Czyta treść, sprawdza pasek wiarygodności – ocenia, czy to działa.</span>
+                    <span className="text-lg text-black">{t('testerStep2')}</span>
                   </li>
                   <li className="flex items-start">
                     <span className="bg-gray-100 text-gray-700 rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold mr-3 mt-0.5">3</span>
-                    <span className="text-lg text-black">Wypełnia anonimową ankietę.</span>
+                    <span className="text-lg text-black">{t('testerStep3')}</span>
                   </li>
                   <li className="flex items-start">
                     <span className="bg-gray-100 text-gray-700 rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold mr-3 mt-0.5">4</span>
-                    <span className="text-lg text-black">Bierze udział w dokładnym wywiadzie (dla chętnych).</span>
+                    <span className="text-lg text-black">{t('testerStep4')}</span>
                   </li>
                 </ul>
               </div>
@@ -286,19 +288,19 @@ export default function LandingPage() {
                 />
               </div>
               <div className="order-1 md:order-2">
-                <h2 className="text-3xl font-bold mb-6 tracking-tight text-black">Dlaczego warto?</h2>
+                <h2 className="text-3xl font-bold mb-6 tracking-tight text-black">{t('whyWorthIt')}</h2>
                 <ul className="space-y-4">
                   <li className="flex items-start">
                     <span className="bg-green-100 text-green-700 rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold mr-3 mt-0.5">✓</span>
-                    <span className="text-lg text-black">Otrzymasz darmowy dostęp do wersji Pro, gdy aplikacja ruszy.</span>
+                    <span className="text-lg text-black">{t('benefit1')}</span>
                   </li>
                   <li className="flex items-start">
                     <span className="bg-green-100 text-green-700 rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold mr-3 mt-0.5">✓</span>
-                    <span className="text-lg text-black">Realny wpływ na kształt aplikacji – twoje sugestie prawdopodobnie trafią do kodu.</span>
+                    <span className="text-lg text-black">{t('benefit2')}</span>
                   </li>
                   <li className="flex items-start">
                     <span className="bg-green-100 text-green-700 rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold mr-3 mt-0.5">✓</span>
-                    <span className="text-lg text-black">Będziesz mógł uczestniczyć w przyszłych testach.</span>
+                    <span className="text-lg text-black">{t('benefit3')}</span>
                   </li>
                 </ul>
               </div>
@@ -310,13 +312,13 @@ export default function LandingPage() {
       {/* Final CTA Section */}
       <Section className="py-20 px-4 bg-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-5xl font-bold mb-8 tracking-tight text-black">Chcesz zostać testerem?</h2>
+          <h2 className="text-5xl font-bold mb-8 tracking-tight text-black">{t('wantToBeTester')}</h2>
           <button
             onClick={() => setShowForm(true)}
             className="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-4 px-8 rounded-xl text-lg transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95"
             style={{ willChange: 'transform' }}
           >
-            Zgłoś się
+            {t('signUp')}
           </button>
         </div>
       </Section>
@@ -324,7 +326,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="bg-white h-20 flex items-center justify-center border-t border-gray-200">
         <p className="text-black text-lg font-medium">
-          Kontakt: pulseaiapp8@gmail.com
+          {t('contact')}
         </p>
       </footer>
     </div>

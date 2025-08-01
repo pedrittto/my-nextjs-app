@@ -1,22 +1,28 @@
 'use client';
-import Image from 'next/image';
 
-export default function Header() {
+import React from 'react';
+import Image from 'next/image';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useLanguage } from '../contexts/LanguageContext';
+
+const Header: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
-    <header className="bg-black text-white fixed top-0 left-0 right-0 z-50 shadow-lg">
-      <div className="w-full flex items-center px-4 py-3">
-        <div className="flex items-center">
-          <Image
-            src="/icons/icon-512.png"
-            alt="Pulse logo"
-            width={32}
-            height={32}
-            className="rounded-lg"
-            priority
-          />
-          <span className="text-white text-xl font-bold ml-2" style={{fontFamily: 'inherit'}}>Pulse</span>
-        </div>
+    <header className="bg-black flex items-center justify-between h-16 px-4">
+      <div className="flex items-center space-x-3">
+        <Image
+          src="/Untitled design (12).png"
+          width={40}
+          height={40}
+          alt={t('pulseLogo')}
+          className="rounded-lg"
+        />
+        <span className="text-white text-lg font-semibold">{t('pulse')}</span>
       </div>
+      <LanguageSwitcher />
     </header>
   );
-}
+};
+
+export default Header;

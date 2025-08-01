@@ -4,11 +4,13 @@ import { useState, useEffect } from 'react';
 import { collection, query, orderBy, onSnapshot, Timestamp } from 'firebase/firestore';
 import { db } from '@/app/lib/firebase';
 import NewsCardList from '@/app/components/NewsCardList';
+import { useLanguage } from '@/app/contexts/LanguageContext';
 
 export default function NewsPage() {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     console.log('🚀 useEffect running on client, window exists:', typeof window !== 'undefined');
@@ -91,7 +93,7 @@ export default function NewsPage() {
   if (error) {
     return (
       <main className="px-4 py-8 bg-slate-50 min-h-screen">
-        <p className="text-red-500">Error: {error}</p>
+        <p className="text-red-500">{t('error')}: {error}</p>
       </main>
     );
   }
@@ -99,9 +101,9 @@ export default function NewsPage() {
   return (
     <div className="min-h-screen bg-white">
       {loading ? (
-        <p className="text-gray-600">Loading...</p>
+        <p className="text-gray-600">{t('loading')}</p>
       ) : cards.length === 0 ? (
-        <p className="text-gray-600">No articles found</p>
+        <p className="text-gray-600">{t('noArticlesFound')}</p>
       ) : (
         <NewsCardList cards={cards} />
       )}
