@@ -16,10 +16,15 @@ const { initializeAutonomousProcessing, runAutonomousProcessing, CONFIG } = requ
 
 // Initialize Express app
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
+
+// Simple root endpoint
+app.get('/', (req, res) => {
+  res.send('Pulse backend is alive');
+});
 
 /**
  * Main workflow function that processes news generation
