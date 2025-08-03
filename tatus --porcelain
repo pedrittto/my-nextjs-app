@@ -1,0 +1,172 @@
+[1mdiff --git "a/-files \357\201\274 Select-String -Pattern \357\200\242.env\357\200\242" "b/-files \357\201\274 Select-String -Pattern \357\200\242.env\357\200\242"[m
+[1mnew file mode 100644[m
+[1mindex 0000000..aa63d6f[m
+[1m--- /dev/null[m
+[1m+++ "b/-files \357\201\274 Select-String -Pattern \357\200\242.env\357\200\242"[m	
+[36m@@ -0,0 +1,12 @@[m
+[32m+[m[32m[33m7c89df3[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m deploy latest[m
+[32m+[m[32m[33me545e1c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m Merge branch 'master' of https://github.com/pedrittto/my-nextjs-app[m
+[32m+[m[32m[33me743f10[m lokalne zmiany[m
+[32m+[m[32m[33meb670cb[m Initial commit with all project files[m
+[32m+[m[32m[33md737199[m cos[m
+[32m+[m[32m[33m273b54e[m fix: NewsCardList props typing[m
+[32m+[m[32m[33m77192b0[m realtime updates with onSnapshot[m
+[32m+[m[32m[33m6c5750c[m Poprawa wyglądu news cardów, poprawki UI[m
+[32m+[m[32m[33m3623322[m feat: configure PWA manifest via metadata[m
+[32m+[m[32m[33m5ab4791[m chore: add  to start script for Railway[m
+[32m+[m[32m[33me2c4ee0[m Fix: Remove unused vars, replace <img> with <Image>, and allow build to skip ESLint errors for production[m
+[32m+[m[32m[33m4aa8565[m Initial commit from Create Next App[m
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mindex 5ef6a52..21d6e93 100644[m
+[1m--- a/.gitignore[m
+[1m+++ b/.gitignore[m
+[36m@@ -32,6 +32,11 @@[m [myarn-error.log*[m
+ [m
+ # env files (can opt-in for committing if needed)[m
+ .env*[m
+[32m+[m[32m.env[m
+[32m+[m[32m.env.local[m
+[32m+[m[32m.env.*.local[m
+[32m+[m[32m.env.example[m
+[32m+[m[32m*.env[m
+ [m
+ # vercel[m
+ .vercel[m
+[1mdiff --git a/MIGRATION_SUMMARY.md b/MIGRATION_SUMMARY.md[m
+[1mnew file mode 100644[m
+[1mindex 0000000..246358e[m
+[1m--- /dev/null[m
+[1m+++ b/MIGRATION_SUMMARY.md[m
+[36m@@ -0,0 +1,238 @@[m
+[32m+[m[32m# N8N to Node.js Backend Migration Summary[m
+[32m+[m
+[32m+[m[32m## Overview[m
+[32m+[m
+[32m+[m[32mSuccessfully migrated the n8n workflow "My workflow (2).json" to a modern Node.js backend with modular architecture, comprehensive testing, and production-ready features.[m
+[32m+[m
+[32m+[m[32m## Final Folder Structure[m
+[32m+[m
+[32m+[m[32m```[m
+[32m+[m[32mmy-nextjs-app/[m
+[32m+[m[32m├── backend/                          # New backend directory[m
+[32m+[m[32m│   ├── index.js                      # Main entry point and Express server[m
+[32m+[m[32m│   ├── fetchNews.js                  # News fetching from various sources[m
+[32m+[m[32m│   ├── trending.js                   # Trend analysis and topic selection[m
+[32m+[m[32m│   ├── summarizer.js                 # OpenAI integration for summaries[m
+[32m+[m[32m│   ├── firestore.js                  # Firestore database operations[m
+[32m+[m[32m│   ├── logger.js                     # Logging utilities[m
+[32m+[m[32m│   ├── test/                         # Unit tests[m
+[32m+[m[32m│   │   ├── fetchNews.test.js         # Tests for news fetching[m
+[32m+[m[32m│   │   └── trending.test.js          # Tests for trend analysis[m
+[32m+[m[32m│   ├── env.example                   # Environment variables template[m
+[32m+[m[32m│   └── README.md                     # Backend documentation[m
+[32m+[m[32m├── package.json                      # Updated with backend dependencies[m
+[32m+[m[32m└── [existing Next.js files...]       # Original frontend files[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m## Key Features Implemented[m
+[32m+[m
+[32m+[m[32m### ✅ Modular Architecture[m
+[32m+[m[32m- **fetchNews.js**: News fetching from NewsAPI (extensible for Twitter, RSS)[m
+[32m+[m[32m- **trending.js**: Intelligent trend analysis with configurable thresholds[m
+[32m+[m[32m- **summarizer.js**: OpenAI GPT-4 integration with exact prompt from n8n[m
+[32m+[m[32m- **firestore.js**: Firestore operations with duplicate detection[m
+[32m+[m[32m- **logger.js**: Comprehensive logging system[m
+[32m+[m[32m- **index.js**: Express server with cron job scheduling[m
+[32m+[m
+[32m+[m[32m### ✅ Business Logic Preservation[m
+[32m+[m[32m- **Exact n8n workflow replication**: All steps, filters, and logic preserved[m
+[32m+[m[32m- **Topic keywords**: War, conflict, politics, military, etc.[m
+[32m+[m[32m- **Hot topics**: Trump, Russia, Ukraine, Biden, etc. with higher thresholds[m
+[32m+[m[32m- **Credibility scoring**: Based on sources, recency, consistency[m
+[32m+[m[32m- **Duplicate detection**: Prevents duplicate articles[m
+[32m+[m[32m- **Image selection**: Filters watermarked images[m
+[32m+[m
+[32m+[m[32m### ✅ Production Features[m
+[32m+[m[32m- **Environment configuration**: All API keys in .env file[m
+[32m+[m[32m- **Error handling**: Comprehensive try/catch with retries[m
+[32m+[m[32m- **Logging**: Detailed console logging at every step[m
+[32m+[m[32m- **Health checks**: /health and /status endpoints[m
+[32m+[m[32m- **Cron scheduling**: Automatic execution every 2 hours[m
+[32m+[m[32m- **Manual triggers**: POST /generate endpoint[m
+[32m+[m
+[32m+[m[32m### ✅ Testing[m
+[32m+[m[32m- **Unit tests**: 22 tests covering core functionality[m
+[32m+[m[32m- **Test coverage**: fetchNews.js and trending.js modules[m
+[32m+[m[32m- **Mock data**: Realistic test scenarios[m
+[32m+[m[32m- **Edge cases**: Null inputs, invalid data, error conditions[m
+[32m+[m
+[32m+[m[32m## API Endpoints[m
+[32m+[m
+[32m+[m[32m| Endpoint | Method | Description |[m
+[32m+[m[32m|----------|--------|-------------|[m
+[32m+[m[32m| `/health` | GET | Health check |[m
+[32m+[m[32m| `/status` | GET | Configuration status |[m
+[32m+[m[32m| `/generate` | POST | Manually trigger news generation |[m
+[32m+[m
+[32m+[m[32m## Environment Variables[m
+[32m+[m
+[32m+[m[32m```env[m
+[32m+[m[32m# NewsAPI Configuration[m
+[32m+[m[32mNEWS_API_KEY=your_news_api_key_here[m
+[32m+[m
+[32m+[m[32m# OpenAI Configuration[m
+[32m+[m[32mOPENAI_API_KEY=your_openai_api_key_here[m
+[32m+[m
+[32m+[m[32m# Firebase Configuration[m
+[32m+[m[32mFIREBASE_PROJECT_ID=your_firebase_project_id[m
+[32m+[m[32mFIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour private key here\n-----END PRIVATE KEY-----\n"[m
+[32m+[m[32mFIREBASE_CLIENT_EMAIL=your_service_account_email@your_project.iam.gserviceaccount.com[m
+[32m+[m
+[32m+[m[32m# Server Configuration[m
+[32m+[m[32mPORT=3001[m
+[32m+[m[32mNODE_ENV=development[m
+[32m+[m
+[32m+[m[32m# Cron Schedule (every 2 hours by default)[m
+[32m+[m[32mCRON_SCHEDULE="0 */2 * * *"[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m## Installation & Setup[m
+[32m+[m
+[32m+[m[32m### 1. Install Dependencies[m
+[32m+[m[32m```bash[m
+[32m+[m[32mnpm install[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m### 2. Configure Environment[m
+[32m+[m[32m```bash[m
+[32m+[m[32mcp backend/env.example backend/.env[m
+[32m+[m[32m# Edit backend/.env with your API keys[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m### 3. Set up Firebase[m
+[32m+[m[32m- Create Firebase project[m
+[32m+[m[32m- Enable Firestore[m
+[32m+[m[32m- Create service account[m
+[32m+[m[32m- Download JSON key[m
+[32m+[m[32m- Extract credentials to .env[m
+[32m+[m
+[32m+[m[32m### 4. Run the Backend[m
+[32m+[m
+[32m+[m[32m**Development mode:**[m
+[32m+[m[32m```bash[m
+[32m+[m[32mnpm run backend:dev[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m**Production mode:**[m
+[32m+[m[32m```bash[m
+[32m+[m[32mnpm run backend[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m**Manual trigger:**[m
+[32m+[m[32m```bash[m
+[32m+[m[32mcurl -X POST http://localhost:3001/generate[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m**Health check:**[m
+[32m+[m[32m```bash[m
+[32m+[m[32mcurl http://localhost:3001/health[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m### 5. Run Tests[m
+[32m+

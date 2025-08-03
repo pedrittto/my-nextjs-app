@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === dalej Twoje customy === */
+/* Custom fade text effect */
+.fade-text {
+  display: inline-block;
+  position: relative;
+}
+.fade-text::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  background: linear-gradient(to right, transparent, white);
+  pointer-events: none;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Custom shadow utilities */
+.shadow-3xl {
+  box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Enhanced line-clamp utilities for full-width text */
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* Ensure text spans full width without excessive wrapping */
+.text-justify {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* Enhanced fade effect for text truncation */
+.text-fade-out {
+  position: relative;
+}
+
+.text-fade-out::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 120px;
+  height: 1.5em;
+  background: linear-gradient(to left, white 0%, white 60%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Dark theme fade effect */
+@media (prefers-color-scheme: dark) {
+  .text-fade-out::after {
+    background: linear-gradient(to left, #0a0a0a 0%, #0a0a0a 60%, transparent 100%);
+  }
+}
+
+/* Enhanced animation utilities */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Smooth height transitions */
+.transition-height {
+  transition: max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Pozostałe customy… */

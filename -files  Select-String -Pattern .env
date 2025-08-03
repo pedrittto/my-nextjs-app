@@ -1,0 +1,12 @@
+[33m7c89df3[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m deploy latest
+[33me545e1c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m Merge branch 'master' of https://github.com/pedrittto/my-nextjs-app
+[33me743f10[m lokalne zmiany
+[33meb670cb[m Initial commit with all project files
+[33md737199[m cos
+[33m273b54e[m fix: NewsCardList props typing
+[33m77192b0[m realtime updates with onSnapshot
+[33m6c5750c[m Poprawa wyglądu news cardów, poprawki UI
+[33m3623322[m feat: configure PWA manifest via metadata
+[33m5ab4791[m chore: add  to start script for Railway
+[33me2c4ee0[m Fix: Remove unused vars, replace <img> with <Image>, and allow build to skip ESLint errors for production
+[33m4aa8565[m Initial commit from Create Next App
