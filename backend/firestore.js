@@ -68,6 +68,14 @@ async function writeArticle(articleData) {
       image_url: image_url || ''
     };
 
+    // Enhanced logging for Firestore save
+    logger.info('Saving article to Firestore with image:', {
+      title_en: title_en,
+      image_url: image_url || '',
+      has_image: !!image_url,
+      document_fields: Object.keys(documentData)
+    });
+
     const docRef = await db.collection('articles').add(documentData);
     logger.logFirestoreWrite(docRef.id);
     

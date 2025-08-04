@@ -28,7 +28,12 @@ export default function NewsPage() {
 
           const arr = snapshot.docs.map(doc => {
             const data = doc.data();
-            console.log('raw image_url:', data.image_url);
+            console.log('📸 Raw image_url from Firestore:', {
+              image_url: data.image_url,
+              has_image: !!data.image_url,
+              image_type: typeof data.image_url,
+              image_length: data.image_url?.length || 0
+            });
             
             let createdDateStr = '';
             let publishedDateStr = '';
@@ -57,11 +62,18 @@ export default function NewsPage() {
             } else {
               publishedDateStr = '';
             }
+            const mappedImageUrl = data.image_url || '/news-placeholder.png';
+            console.log('🖼️ Mapped image_url for rendering:', {
+              original: data.image_url,
+              mapped: mappedImageUrl,
+              using_fallback: !data.image_url
+            });
+            
             return {
               id: doc.id,
               title: data.title || '',
               description: data.description || '',
-              image_url: data.image_url || '/news-placeholder.png',
+              image_url: mappedImageUrl,
               credibility_score: data.credibility_score || 0,
               created_at: createdDateStr,
               trend: data.trend || '',
@@ -99,13 +111,19 @@ export default function NewsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pt-20">
       {loading ? (
-        <p className="text-gray-600">{t('loading')}</p>
+        <div className="px-4 py-8">
+          <p className="text-gray-600">{t('loading')}</p>
+        </div>
       ) : cards.length === 0 ? (
-        <p className="text-gray-600">{t('noArticlesFound')}</p>
+        <div className="px-4 py-8">
+          <p className="text-gray-600">{t('noArticlesFound')}</p>
+        </div>
       ) : (
-        <NewsCardList cards={cards} />
+        <div className="px-4 pb-8">
+          <NewsCardList cards={cards} />
+        </div>
       )}
     </div>
   );

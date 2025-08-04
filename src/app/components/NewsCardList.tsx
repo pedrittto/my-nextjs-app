@@ -21,7 +21,7 @@ const NewsCardList: React.FC<NewsCardListProps> = ({ cards }) => {
   console.log('🎴 NewsCardList: Rendering', cards.length, 'NewsCard components');
 
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-6 max-w-2xl mx-auto">
       {cards.map((card) => (
         <NewsCard key={card.id} article={card} />
       ))}

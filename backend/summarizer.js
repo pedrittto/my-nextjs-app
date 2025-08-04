@@ -160,10 +160,12 @@ Return nothing if any field cannot be filled according to the above rules.
     const requiredFields = ['title_pl', 'description_pl', 'title_en', 'description_en', 'credibility_score', 'published_at'];
     const missingFields = requiredFields.filter(field => !summaryData[field]);
     
-    // Log image URL for debugging
+    // Enhanced logging for image URL
     logger.info('Generated summary image URL:', { 
       image_url: summaryData.image_url,
-      has_image: !!summaryData.image_url 
+      has_image: !!summaryData.image_url,
+      provided_image_url: imageUrl,
+      using_provided_image: !summaryData.image_url && imageUrl
     });
     
     if (missingFields.length > 0) {

@@ -10,6 +10,40 @@ import { Translations } from "../lib/translations";
 
 const FADE_WIDTH = 48; // px, for the fade effect on last 2-3 words
 
+// Function to get credibility color based on score (20 distinct colors)
+const getCredibilityColor = (score: number): string => {
+  // Ensure score is between 0 and 100
+  const clampedScore = Math.max(0, Math.min(100, score));
+  
+  // Create 20 distinct color stops (every 5%)
+  const colorStops = [
+    '#ef4444', // 0-5%: Red
+    '#f97316', // 5-10%: Orange-red
+    '#ea580c', // 10-15%: Dark orange
+    '#dc2626', // 15-20%: Dark red
+    '#f59e0b', // 20-25%: Amber
+    '#d97706', // 25-30%: Dark amber
+    '#facc15', // 30-35%: Yellow
+    '#eab308', // 35-40%: Dark yellow
+    '#fbbf24', // 40-45%: Light yellow
+    '#f59e0b', // 45-50%: Amber
+    '#fbbf24', // 50-55%: Light yellow
+    '#facc15', // 55-60%: Yellow
+    '#fbbf24', // 60-65%: Light yellow
+    '#facc15', // 65-70%: Yellow
+    '#fbbf24', // 70-75%: Light yellow
+    '#22c55e', // 75-80%: Green
+    '#16a34a', // 80-85%: Dark green
+    '#15803d', // 85-90%: Darker green
+    '#166534', // 90-95%: Darkest green
+    '#15803d'  // 95-100%: Dark green
+  ];
+  
+  // Calculate which color stop to use
+  const colorIndex = Math.floor(clampedScore / 5);
+  return colorStops[Math.min(colorIndex, colorStops.length - 1)];
+};
+
 interface NewsCardProps {
   article: Article;
 }
@@ -78,9 +112,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
 
   return (
     <article
-      className="bg-white rounded-3xl shadow-lg overflow-hidden mb-8 max-w-2xl mx-4 min-h-[340px] px-0 sm:mx-auto mt-0"
-      // Marginesy po bokach na mobile przez px-4, na większych px-0 i wyśrodkowanie przez mx-auto
-      // max-w-[420px] zabezpiecza szerokość newscarda i obrazka
+      className="bg-white rounded-3xl shadow-lg overflow-hidden max-w-2xl mx-auto min-h-[340px] px-0"
     >
       {/* Obrazek */}
       <div className="w-full h-56 bg-gray-100 relative rounded-t-3xl overflow-hidden shadow-[0_8px_24px_-8px_rgba(0,0,0,0.18)]">
@@ -91,6 +123,19 @@ const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
           fill
           unoptimized
           priority
+          onError={(e) => {
+            console.warn('❌ Image failed to load:', {
+              image_url: article.image_url,
+              article_id: article.id,
+              error: e
+            });
+          }}
+          onLoad={() => {
+            console.log('✅ Image loaded successfully:', {
+              image_url: article.image_url,
+              article_id: article.id
+            });
+          }}
         />
         <div className="absolute top-3 right-3 z-10">
           <time className="bg-white/90 backdrop-blur-sm px-3 py-1 text-xs text-gray-600 rounded-full shadow">
@@ -99,29 +144,26 @@ const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
         </div>
       </div>
       {/* Treść */}
-      <div className="px-4 pt-4 pb-8">
-        <h2 className="text-xl font-bold text-gray-900 leading-tight mb-2">{title}</h2>
+      <div className="px-6 pt-6 pb-8">
+        <h2 className="text-xl font-bold text-gray-900 leading-tight mb-4">{title}</h2>
         {/* Wiarygodność */}
-        <span className="text-sm font-medium text-gray-700 mb-1 block">{t('credibility')}</span>
-        <div className="w-full h-5 rounded-full overflow-hidden bg-gray-200 mb-2">
+        <span className="text-sm font-medium text-gray-700 mb-2 block">{t('credibility')}</span>
+        <div className="w-full h-5 rounded-full overflow-hidden bg-gray-200 mb-4 relative">
           <div
-            className="h-5 flex items-center justify-end pr-3 text-sm font-semibold text-white"
+            className="h-5 flex items-center justify-end pr-3 text-sm font-semibold text-white relative overflow-hidden"
             style={{
               width: `${article.credibility_score}%`,
-              background:
-                article.credibility_score < 60
-                  ? "#ef4444"
-                  : article.credibility_score < 80
-                  ? "#facc15"
-                  : "#22c55e",
-              transition: "width 0.5s cubic-bezier(0.4,0,0.2,1)",
+              background: getCredibilityColor(article.credibility_score),
+              transition: "width 0.5s cubic-bezier(0.4,0,0.2,1), background 0.3s ease",
             }}
           >
+            {/* Shimmer effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
             {article.credibility_score}%
           </div>
         </div>
         {/* Opis z expand/collapse */}
-        <div className="w-full mt-2">
+        <div className="w-full">
           <div
             className="relative group overflow-hidden transition-all duration-500 ease-in-out cursor-pointer pb-4 min-h-[5.5em]"
             style={{
@@ -158,7 +200,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
             )}
             {/* Przycisk */}
             <button
-              className="text-sm font-semibold text-black cursor-pointer mt-1"
+              className="text-sm font-semibold text-black cursor-pointer mt-2"
               style={{
                 background: "none",
                 border: "none",

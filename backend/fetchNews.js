@@ -140,6 +140,25 @@ async function fetchArticlesForTrend(keyword, pageSize = 8) {
  */
 async function fetchInitialArticles() {
   try {
+    // TEMPORARY TEST DATA - REMOVE AFTER TESTING
+    // Check if we should use test data (for development/testing purposes)
+    // if (process.env.FORCE_TEST_DATA === 'true') {
+    //   // TEMPORARY TEST DATA - REMOVE AFTER TESTING
+    //   // Hard-coded test articles to verify pipeline works correctly
+    //   // These articles contain high-frequency keywords to guarantee trend detection
+    //   logger.info('Using TEMPORARY TEST DATA instead of NewsAPI - REMOVE AFTER TESTING');
+    //   console.log('🔧 TEST MODE: Using injected test articles for trend simulation');
+    //   
+    //   const testArticles = [
+    //     // ... test articles would go here ...
+    //   ];
+    //   
+    //   return testArticles;
+    // }
+    
+    // ORIGINAL CODE - Use when FORCE_TEST_DATA is not set to 'true'
+    logger.info('Fetching articles from NewsAPI');
+    
     // Keywords from the original n8n workflow
     const keywords = [
       'war OR conflict OR attack OR battle OR military OR defense',
