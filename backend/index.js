@@ -3,7 +3,11 @@
  * Orchestrates the entire workflow: fetch → analyze → summarize → store
  */
 
-require('dotenv').config();
+// Load environment variables FIRST, before any other imports
+// Use bulletproof loader to ensure reliable loading regardless of working directory
+const { loadEnvironmentVariables } = require('./env-loader');
+loadEnvironmentVariables();
+
 const express = require('express');
 const cron = require('cron');
 const logger = require('./logger');

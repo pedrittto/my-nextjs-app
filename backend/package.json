@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "diagnostic": "node diagnostic-env.js",
+    "test-env": "node test-env-loading.js"
   },
   "dependencies": {
     "axios": "^1.11.0",

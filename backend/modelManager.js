@@ -3,8 +3,21 @@
  * Handles model detection, fallback logic, and model availability checking
  */
 
+// Load environment variables explicitly
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+
 const OpenAI = require('openai');
 const logger = require('./logger');
+
+// Validate OpenAI API key before creating client
+if (!process.env.OPENAI_API_KEY) {
+  console.error('❌ CRITICAL ERROR: OPENAI_API_KEY is not set in environment variables');
+  console.error('💡 Please check your .env file and ensure OPENAI_API_KEY is properly configured');
+  process.exit(1);
+}
+
+console.log('🔑 OpenAI API Key Status:', process.env.OPENAI_API_KEY ? '***PRESENT***' : '***MISSING***');
 
 // Initialize OpenAI client
 const openai = new OpenAI({
